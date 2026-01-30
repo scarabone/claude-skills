@@ -7,7 +7,7 @@ description: >
   any work that bridges local code to external systems. CRITICAL FAILURE MODE:
   Assuming feature parity across platforms (desktop ≠ web ≠ mobile ≠ API), or
   starting multi-step implementation without verifying the end goal is achievable.
-  Search requirements BEFORE implementation, not after hours of setup.
+  Use Context7 to query official docs BEFORE implementation, not after hours of setup.
 ---
 
 # Integration Preflight Check
@@ -37,19 +37,49 @@ What specific platform/client will consume this integration?
 - GitHub.com ≠ GitHub Desktop ≠ GitHub CLI
 - Be specific. "Claude" is not specific enough.
 
-### 2. Search Official Requirements
-Before ANY implementation:
+### 2. Query Official Docs via Context7
+
+**Use Context7 to get authoritative answers.** Don't rely on training data.
+
 ```
-Search: "[platform] [integration type] requirements [current year]"
-Search: "[platform] [feature] authentication requirements"
-Search: "[platform] API documentation [specific endpoint]"
+mcp__context7__query-docs with:
+- libraryId: [appropriate ID from table below]
+- query: "[platform] [feature] authentication requirements"
 ```
 
-Look for:
-- **Authentication requirements** (OAuth, API keys, tokens, none)
-- **Plan/tier requirements** (free, pro, enterprise)
-- **Platform-specific limitations** (web only, desktop only, etc.)
-- **Required endpoints or protocols**
+#### Context7 Library IDs - Quick Reference
+
+| Platform | Library ID | Snippets | Use For |
+|----------|------------|----------|---------|
+| **Claude Platform** | `/websites/platform_claude_en` | 32414 | API, MCP, integrations |
+| **Claude Help** | `/websites/support_claude` | 1486 | Plans, features, limitations |
+| **Anthropic Cookbook** | `/anthropics/anthropic-cookbook` | 1226 | Code examples |
+| **Cloudflare Docs** | `/cloudflare/cloudflare-docs` | 20980 | Tunnels, Workers, Access |
+| **Cloudflare Agents** | `/websites/developers_cloudflare_agents` | 1061 | AI agents, SDK |
+| **Home Assistant** | `/home-assistant/home-assistant.io` | 7101 | User docs, integrations |
+| **HA Developers** | `/home-assistant/developers.home-assistant` | 2045 | API, custom components |
+| **MCP Spec** | `/modelcontextprotocol.io/llmstxt` | 1254 | Protocol, auth, transport |
+| **MCP Spec (alt)** | `/websites/modelcontextprotocol_io_specification` | 1370 | Protocol details |
+
+#### Example Queries
+
+**Before building MCP integration for Claude.ai web:**
+```
+libraryId: /websites/platform_claude_en
+query: "MCP server authentication requirements Claude web OAuth"
+```
+
+**Before setting up Cloudflare tunnel:**
+```
+libraryId: /cloudflare/cloudflare-docs
+query: "Cloudflare tunnel authentication access control"
+```
+
+**Before building Home Assistant integration:**
+```
+libraryId: /home-assistant/developers.home-assistant
+query: "Home Assistant API authentication long-lived access token"
+```
 
 ### 3. Verify Feature Parity (Don't Assume)
 
@@ -76,36 +106,25 @@ If requirements aren't met, STOP and discuss alternatives before building.
 **Mistake:** Built entire Cloudflare tunnel infrastructure without checking Claude.ai web requirements
 **Discovery:** Claude.ai web requires OAuth 2.1; authless servers only work with Claude Desktop
 **Wasted:** ~2 hours of setup, configuration, testing, then rollback
-**Fix:** 5-minute search would have revealed OAuth requirement before any implementation
+**Fix:** 5-minute Context7 query would have revealed OAuth requirement before any implementation
 
 ### Pattern: Assumed Feature Parity
 "Claude Desktop supports authless MCP, so Claude.ai web must too."
 
 Wrong. Different clients have different security models.
 
-## Quick Reference: Common Gotchas
-
-| Platform | Gotcha |
-|----------|--------|
-| Claude.ai web | Requires OAuth 2.1 for MCP (authless = Desktop/Code only) |
-| GitHub Actions | Different token scopes than personal access tokens |
-| Cloudflare | Free tier has request limits, some features Workers-only |
-| AWS Lambda | Cold starts, timeout limits, VPC complexity |
-| OAuth flows | Callback URLs must be pre-registered |
-| Webhooks | Often require HTTPS, public IP, specific response format |
-
 ## Decision Point
 
 After the preflight check:
 
 - **Requirements met?** → Proceed with implementation
-- **Requirements unclear?** → Search more or ask user before proceeding
+- **Requirements unclear?** → Query Context7 again with more specific terms, or ask user
 - **Requirements NOT met?** → STOP. Discuss alternatives. Don't build something that won't work.
 
 ## The 10-Minute Rule
 
 If the integration will take more than 10 minutes to build:
-1. Spend 5 minutes on preflight check
+1. Spend 5 minutes on preflight check (Context7 query)
 2. Confirm requirements with user
 3. Then build
 
