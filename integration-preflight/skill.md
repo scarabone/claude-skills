@@ -59,7 +59,13 @@ mcp__context7__query-docs with:
 | **Home Assistant** | `/home-assistant/home-assistant.io` | 7101 | User docs, integrations |
 | **HA Developers** | `/home-assistant/developers.home-assistant` | 2045 | API, custom components |
 | **MCP Spec** | `/modelcontextprotocol.io/llmstxt` | 1254 | Protocol, auth, transport |
-| **MCP Spec (alt)** | `/websites/modelcontextprotocol_io_specification` | 1370 | Protocol details |
+| **Frigate** | `/blakeblackshear/frigate` | 1310 | NVR, object detection, config |
+| **Frigate Docs** | `/websites/frigate_video` | 533 | Configuration, cameras |
+| **Proxmox** | `/proxmox/pve-docs` | 1954 | API, VMs, containers |
+| **Proxmox (alt)** | `/websites/pve_proxmox_pve-docs` | 1272 | Web UI, admin |
+| **AdGuard Home** | `/adguardteam/adguardhome` | 278 | DNS, filtering, API |
+| **Docker** | `/docker/docs` | 11763 | Containers, compose, API |
+| **Docker (large)** | `/websites/docker` | 131291 | Comprehensive docs |
 
 #### Example Queries
 
